@@ -1,54 +1,54 @@
 <launch>
-	<!-- Defining the arguments -->
-	<arg name="HokuyoLaser" value="1"/>
-	<arg name="SICKLMSLaser" value="0"/>
-	<arg name="P2OS_Driver" value="1"/>
-	<arg name="KeyboardTeleop" value="1"/>
-	<arg name="JoystickTeleop" value="0"/>
-	<arg name="Transform" value="1"/>
-	<arg name="Dashboard" value="0"/>
-	<arg name="enableMotor" value="1"/>
+    <!-- Defining the arguments -->
+    <arg name="HokuyoLaser" value="1"/>
+    <arg name="SICKLMSLaser" value="0"/>
+    <arg name="P2OS_Driver" value="1"/>
+    <arg name="KeyboardTeleop" value="1"/>
+    <arg name="JoystickTeleop" value="0"/>
+    <arg name="Transform" value="1"/>
+    <arg name="Dashboard" value="0"/>
+    <arg name="enableMotor" value="1"/>
 
-	<!-- Start rosaria robot driver -->
-	<node pkg="rosaria" name="RosAria" type="RosAria">
-		<param name="port" value="/dev/ttyS0" />
-	</node>
+    <!-- Start rosaria robot driver -->
+    <node pkg="rosaria" name="RosAria" type="RosAria">
+        <param name="port" value="/dev/ttyS0"/>
+    </node>
 
-        <!-- Start the p2os ROS Driver 
-	<group if="$(arg P2OS_Driver)" >
-		<node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>
-	</group>-->
-	
-	<!-- Start the Dashboard 
-	<group if="$(arg Dashboard)">
-		<node pkg="p2os_dashboard" name="p2os_dashboard" type="p2os_dashboard"/>
-	</group>-->
-	
-        <!-- Start the teleoperation node for keyboard control
-        <group if="$(arg KeyboardTeleop)">
-                <include file="$(find p2os_launch)/launch/teleop_keyboard.launch" />
-        </group> -->
+    <!--&lt;!&ndash; Start the p2os ROS Driver  &ndash;&gt;-->
+    <!--<group if="$(arg P2OS_Driver)">-->
+        <!--<node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>-->
+    <!--</group>-->
 
-	 <!-- Start the teleoperation node for joystick control
-        <group if="$(arg JoystickTeleop)">
-                <include file="$(find p2os_launch)/launch/teleop_joy.launch" /> 
-        </group>-->
+    <!--&lt;!&ndash; Start the Dashboard  &ndash;&gt;-->
+    <!--<group if="$(arg Dashboard)">-->
+        <!--<node pkg="p2os_dashboard" name="p2os_dashboard" type="p2os_dashboard"/>-->
+    <!--</group>-->
 
-        <!-- Publish the required transform
-        <group if="$(arg Transform)">
-		<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch" />          
-        </group> -->
+    <!--&lt;!&ndash; Start the teleoperation node for keyboard control &ndash;&gt;-->
+    <!--<group if="$(arg KeyboardTeleop)">-->
+        <!--<include file="$(find p2os_launch)/launch/teleop_keyboard.launch"/>-->
+    <!--</group>-->
 
-        <!-- Start the Hokuyo Laser node if Hokuyo Laser is used 
-        <group if="$(arg HokuyoLaser)">
-                <include file="$(find p2os_launch)/launch/hokuyo.launch" /> 
-        </group>-->
+    <!--&lt;!&ndash; Start the teleoperation node for joystick control &ndash;&gt;-->
+    <!--<group if="$(arg JoystickTeleop)">-->
+        <!--<include file="$(find p2os_launch)/launch/teleop_joy.launch"/>-->
+    <!--</group>-->
 
-        <!-- Start the SICK LMS Laser Node if a SICK Laser is used
-        <group if="$(arg SICKLMSLaser)">
-               <include file="$(find p2os_launch)/launch/sicklms.launch" /> 
-        </group> -->
+    <!--&lt;!&ndash; Publish the required transform &ndash;&gt;-->
+    <!--<group if="$(arg Transform)">-->
+        <!--<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/>-->
+    <!--</group>-->
 
-        <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+    <!--&lt;!&ndash; Start the Hokuyo Laser node if Hokuyo Laser is used  &ndash;&gt;-->
+    <!--<group if="$(arg HokuyoLaser)">-->
+        <!--<include file="$(find p2os_launch)/launch/hokuyo.launch"/>-->
+    <!--</group>-->
+
+    <!--&lt;!&ndash; Start the SICK LMS Laser Node if a SICK Laser is used &ndash;&gt;-->
+    <!--<group if="$(arg SICKLMSLaser)">-->
+        <!--<include file="$(find p2os_launch)/launch/sicklms.launch"/>-->
+    <!--</group>-->
+
+    <!--<include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>-->
 </launch>
 

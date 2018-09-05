@@ -1,10 +1,7 @@
 <launch>
     <!-- Defining the arguments -->
     <arg name="HokuyoLaser" value="1"/>
-    <arg name="SICKLMSLaser" value="0"/>
     <arg name="P2OS_Driver" value="1"/>
-    <arg name="KeyboardTeleop" value="1"/>
-    <arg name="JoystickTeleop" value="0"/>
     <arg name="Transform" value="1"/>
     <arg name="Dashboard" value="0"/>
     <arg name="enableMotor" value="1"/>
@@ -22,16 +19,6 @@
     <!--&lt;!&ndash; Start the Dashboard  &ndash;&gt;-->
     <!--<group if="$(arg Dashboard)">-->
         <!--<node pkg="p2os_dashboard" name="p2os_dashboard" type="p2os_dashboard"/>-->
-    <!--</group>-->
-
-    <!--&lt;!&ndash; Start the teleoperation node for keyboard control &ndash;&gt;-->
-    <!--<group if="$(arg KeyboardTeleop)">-->
-        <!--<include file="$(find p2os_launch)/launch/teleop_keyboard.launch"/>-->
-    <!--</group>-->
-
-    <!--&lt;!&ndash; Start the teleoperation node for joystick control &ndash;&gt;-->
-    <!--<group if="$(arg JoystickTeleop)">-->
-        <!--<include file="$(find p2os_launch)/launch/teleop_joy.launch"/>-->
     <!--</group>-->
 
     <!--&lt;!&ndash; Publish the required transform &ndash;&gt;-->

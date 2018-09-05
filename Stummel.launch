@@ -44,11 +44,6 @@
         <!--<include file="$(find p2os_launch)/launch/hokuyo.launch"/>-->
     <!--</group>-->
 
-    <!--&lt;!&ndash; Start the SICK LMS Laser Node if a SICK Laser is used &ndash;&gt;-->
-    <!--<group if="$(arg SICKLMSLaser)">-->
-        <!--<include file="$(find p2os_launch)/launch/sicklms.launch"/>-->
-    <!--</group>-->
-
     <!--<include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>-->
 </launch>
 

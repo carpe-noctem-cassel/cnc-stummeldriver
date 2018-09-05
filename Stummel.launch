@@ -2,6 +2,7 @@
     <!-- Defining the arguments -->
     <arg name="VelodyneLaser" value="1"/>
     <arg name="P2OS_Driver" value="1"/>
+    <arg name="Joy" value="1"/>
     <arg name="Transform" value="1"/>
     <arg name="Dashboard" value="0"/>
     <arg name="enableMotor" value="1"/>
@@ -9,6 +10,11 @@
     <!-- Start the p2os ROS Driver  -->
     <group if="$(arg P2OS_Driver)">
         <node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>
+    </group>
+
+    <!-- Start the joy node  -->
+    <group if="$(arg Joy)">
+        <node pkg="joy" name="joy_node" type="joy_node"/>
     </group>
 
     <!-- Start the Dashboard  -->

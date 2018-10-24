@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!--<arg name="world_file"  default="$(env TURTLEBOT_GAZEBO_WORLD_FILE)"/>-->
-  <arg name="world_file"  default="world/distributed_systems_simple.world"/>
+  <arg name="world_file"  default="$(find cnc-stummeldriver)/world/distributed_systems_simple.world"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="use_sim_time" value="true"/>
@@ -11,7 +11,7 @@
   </include>
   
   <!-- Map server -->
-  <arg name="map_file" default="maps/department_sim.yaml"/>
+  <arg name="map_file" default="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
     <param name="frame_id" value="/map" />
   </node>
@@ -27,7 +27,7 @@
   </node>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-z 0.051 -urdf -param robot_description -model stummel" respawn="false" output="screen" />
+  <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-x 1.0 -y 1.0 -z 0.001 -urdf -param robot_description -model stummel" respawn="false" output="screen" />
 
   <!--
   <group ns="stummel">

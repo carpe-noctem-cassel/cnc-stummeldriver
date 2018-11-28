@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Generate urdf-model of TurtleBot according to the given base, stack and 3d sensor.  -->
+
+  <!-- Spawn the generated turtlebot model. (Spawn process terminates after spawning.)-->
+  <arg name="robot_model_name" default="stummel"/>
+  <arg name="init_pose" default="-x 1.0 -y 1.0 -z 0.001"/>
+
+ <!-- push robot_description to factory and spawn robot in gazebo -->
+  <!--node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param robot_description -model $(arg robot_model_name)" respawn="false" output="screen"/-->
+
+ <include file="$(find p2os_urdf)/launch/upload_pioneer3at.xml"/>
+
+  <!-- publish TFs for static links -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+
+    <param name="publish_frequency" type="double" value="30.0"/>
+    <param name="tf_prefix" type="string" value="stummel"/>
+ 
+  </node>
+ 
+  <!-- Localization -->
+  <node pkg="fake_localization" type="fake_localization" name="fake_localization">
+  	<param name="odom_frame_id"   value="odom"/>
+     <param name="base_frame_id"   value="base_link"/>
+     <remap from="base_pose_ground_truth" to="odom"/>
+  </node>
+
+ <!-- Move base -->
+    <include file="$(find cnc-stummeldriver)/launch/ninja-move_base-simulation.launch.xml">
+    <arg name="laser_topic" value="scan_hokuyo" />
+    </include>
+    <param name="move_base/global_costmap/global_frame" value="/map" />    
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-x 1.0 -y 1.0 -z 0.001 -urdf -param robot_description -model stummel" respawn="false" output="screen" />
+
+</launch>

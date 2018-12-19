@@ -24,7 +24,7 @@
     <param name="tf_prefix" type="string" value=""/>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="real_fake_odometry" args="0.93 2.8 0 -3.08 0 0 1 odom base_link 100" />
+  <!--node pkg="tf" type="static_transform_publisher" name="real_fake_odometry" args="0.93 2.8 0 -3.08 0 0 1 odom base_link 10" /-->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-x 1.0 -y 1.0 -z 0.001 -urdf -param robot_description -model stummel" respawn="false" output="screen" />

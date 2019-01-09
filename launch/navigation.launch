@@ -2,22 +2,27 @@
 <launch>
 	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
 		<remap from="cloud_in" to="velodyne_points"/> <!-- not sure if this works correctly -->
-<!--
-		<rosparam>
-            #target_frame: # Leave disabled to output scan in pointcloud frame
-            transform_tolerance: 0.01
-            min_height: 0.0
-            max_height: 1.0
+</node>
+<!-- From p2os/launch/navigation.launch-->
+	<!--<master auto="start"/>-->
+	
+    <!-- Localization -->
+    <node pkg="fake_localization" type="fake_localization" name="fake_localization">
+      <param name="odom_frame_id"   value="odom"/>
+      <param name="base_frame_id"   value="base_link"/>
+      <remap from="base_pose_ground_truth" to="ground_truth_pose"/>
+    </node>
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find p2os_launch)/launch/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find p2os_launch)/launch/costmap_common_params_p3at.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find p2os_launch)/launch/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find p2os_launch)/launch/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find p2os_launch)/launch/base_local_planner_params.yaml" command="load" />
+		<param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+		<param name="conservative_reset_dist" type="double" value="3.0" />
+		<param name="controller_frequency" type="double" value="15.0" />
+	</node> 
 
-            angle_min: -1.5708 # -M_PI/2
-            angle_max: 1.5708 # M_PI/2
-            angle_increment: 0.087 # M_PI/360.0
-            scan_time: 0.3333
-            range_min: 0.45
-            range_max: 4.0
-            use_inf: true
-            concurrency_level: 0
-         </rosparam>
--->
-	</node>
+
 </launch>

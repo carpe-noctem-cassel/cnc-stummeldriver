@@ -3,14 +3,16 @@
     <!-- Defining the arguments -->
     <arg name="VelodyneLaser" value="1"/>
     <arg name="P2OS_Driver" value="1"/>
-    <arg name="Joy" value="1"/>
+    <arg name="Joy" value="0"/>
     <arg name="Transform" value="1"/>
     <arg name="Dashboard" value="0"/>
     <arg name="enableMotor" value="1"/>
+    <arg name="Map" value="1"/>
 
     <!-- Start the p2os ROS Driver  -->
     <group if="$(arg P2OS_Driver)">
         <node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>
+		 <param name="pulse" value="1.0" />
     </group>
 
     <!-- Start the joy node  -->
@@ -33,6 +35,29 @@
         <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
     </group>
 
+    <group if="$(arg Map)">
+  <!-- Map server -->
+      <arg name="map_file" value="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
+      <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+          <param name="frame_id" value="map" />
+      </node>
+     </group>
+
     <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+
+	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+		<remap from="cloud_in" to="velodyne_points"/> <!-- not sure if this works correctly -->
+	</node>
+
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/base_local_planner_params.yaml" command="load" />
+		<param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+		<param name="conservative_reset_dist" type="double" value="3.0" />
+		<param name="controller_frequency" type="double" value="15.0" />
+	</node> 
 </launch>
 

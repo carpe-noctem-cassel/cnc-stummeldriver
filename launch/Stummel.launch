@@ -43,7 +43,7 @@
       </node>
      </group>
 
-    <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+    <include file="$(find stummel_urdf)/launch/stummel.real.launch"/>
 
 	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
 		<remap from="cloud_in" to="velodyne_points"/> <!-- not sure if this works correctly -->

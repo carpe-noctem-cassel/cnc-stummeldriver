@@ -6,13 +6,6 @@
 <!-- From p2os/launch/navigation.launch-->
 	<!--<master auto="start"/>-->
 	
-    <!-- Localization -->
-    <node pkg="fake_localization" type="fake_localization" name="fake_localization">
-      <param name="odom_frame_id"   value="odom"/>
-      <param name="base_frame_id"   value="base_link"/>
-      <remap from="base_pose_ground_truth" to="ground_truth_pose"/>
-    </node>
-	
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="global_costmap" />
 		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="local_costmap" />

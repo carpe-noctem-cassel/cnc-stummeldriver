@@ -16,7 +16,14 @@
     <param name="frame_id" value="map" />
   </node>
 
- <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/upload_stummel.xml"/>
+      <!-- Localization -->
+      <node pkg="fake_localization" type="fake_localization" name="fake_localization">
+        <param name="odom_frame_id"   value="odom"/>
+        <param name="base_frame_id"   value="base_link"/>
+        <remap from="base_pose_ground_truth" to="ground_truth_pose"/>
+      </node>
+
+ <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/upload_stummel_sim.xml"/>
   
   <!-- publish TFs for static links -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
@@ -27,6 +34,6 @@
   <!--node pkg="tf" type="static_transform_publisher" name="real_fake_odometry" args="0.93 2.8 0 -3.08 0 0 1 odom base_link 10" /-->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-x 1.0 -y 1.0 -z 0.001 -urdf -param robot_description -model stummel" respawn="false" output="screen" />
+  <node name="spawn_pioneer" pkg="gazebo_ros" type="spawn_model" args="-x 1.0 -y 1.0 -z 0.001 -urdf -param robot_description -model stummel_sim" respawn="false" output="screen" />
 
 </launch>

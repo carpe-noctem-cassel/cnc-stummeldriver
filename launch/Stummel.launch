@@ -8,11 +8,11 @@
     <arg name="Dashboard" value="0"/>
     <arg name="enableMotor" value="1"/>
     <arg name="Map" value="1"/>
+    <arg name="AmclLocalization" value="1"/>
 
     <!-- Start the p2os ROS Driver  -->
     <group if="$(arg P2OS_Driver)">
         <node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>
-		 <param name="pulse" value="1.0" />
     </group>
 
     <!-- Start the joy node  -->
@@ -34,6 +34,11 @@
     <group if="$(arg VelodyneLaser)">
         <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
     </group>
+
+    <!-- Start the amcl Localization -->
+        <group if="$(arg AmclLocalization)">
+            <include file="$(find p2os_launch)/amcl.launch"/>
+        </group>
 
     <group if="$(arg Map)">
   <!-- Map server -->

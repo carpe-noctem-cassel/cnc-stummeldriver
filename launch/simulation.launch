@@ -16,7 +16,9 @@
     <param name="frame_id" value="/map" />
   </node>
 
- <include file="$(find p2os_urdf)/launch/upload_pioneer3at.xml"/>
+
+    <arg name="robot_desc_loader" default="$(find cnc-stummeldriver)/urdf/stummel-desc.default.xml"/>
+    <include file="$(arg robot_desc_loader)" />
   
   <!-- publish TFs for static links -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">

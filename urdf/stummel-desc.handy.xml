@@ -1,0 +1,4 @@
+<launch>
+    <!-- send table.xml to param server -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find cnc-stummeldriver)/urdf/robot.xacro" />
+</launch>

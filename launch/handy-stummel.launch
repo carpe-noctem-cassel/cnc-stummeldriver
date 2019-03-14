@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find cnc-stummeldriver)/launch/simulation.launch">
+    <arg name="robot_desc_loader" value="$(find cnc-stummeldriver)/urdf/stummel-desc.handy.xml"/>
+  </include>
+
+</launch>

@@ -50,9 +50,9 @@
 
      <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/stummel.real.launch"/>
 
-	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
-		<remap from="cloud_in" to="velodyne_points"/> <!-- not sure if this works correctly -->
-	</node>
+	<!--<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+		<remap from="cloud_in" to="velodyne_points"/>
+	</node>-->
 
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="global_costmap" />

@@ -10,6 +10,8 @@
     <arg name="Map" value="1"/>
     <arg name="AmclLocalization" value="1"/>
 
+    <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/stummel.real.launch"/>
+
     <!-- Start the p2os ROS Driver  -->
     <group if="$(arg P2OS_Driver)">
         <node pkg="p2os_driver" name="p2os_driver" type="p2os_driver"/>
@@ -88,9 +90,6 @@
          </node>
       </group>
 
-
-     <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/stummel.real.launch"/>
-
 	<!--<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
 		<remap from="cloud_in" to="velodyne_points"/>
 	</node>-->
@@ -105,6 +104,11 @@
 		<param name="conservative_reset_dist" type="double" value="3.0" />
 		<param name="controller_frequency" type="double" value="15.0" />
 		<param name="move_base/global_costmap/global_frame" value="map" />
+		<param name="odom_frame_id"   default="odom"/>
+        <param name="base_frame_id"   default="base_footprint"/>
+        <param name="global_frame_id" default="map"/>
+        <param name="odom_topic" default="pose" />
+        <param name="laser_topic" default="scan" />
 	</node>
 </launch>
 

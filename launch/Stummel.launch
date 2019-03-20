@@ -35,12 +35,6 @@
         <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
     </group>
 
-    <!-- Start the amcl Localization -->
-        <group if="$(arg AmclLocalization)">
-		<include file="$(find p2os_launch)/launch/amcl.launch"/>
-        <param name="use_map_topic" value="true" />
-      </group>
-
     <group if="$(arg Map)">
   <!-- Map server -->
       <arg name="map_file" value="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
@@ -48,6 +42,13 @@
           <param name="frame_id" value="map" />
       </node>
      </group>
+
+         <!-- Start the amcl Localization -->
+             <group if="$(arg AmclLocalization)">
+     		<include file="$(find p2os_launch)/launch/amcl.launch"/>
+             <param name="use_map_topic" value="true" />
+           </group>
+
 
      <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/stummel.real.launch"/>
 

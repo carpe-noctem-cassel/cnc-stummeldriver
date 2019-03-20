@@ -38,7 +38,8 @@
     <!-- Start the amcl Localization -->
         <group if="$(arg AmclLocalization)">
 		<include file="$(find p2os_launch)/launch/amcl.launch"/>
-        </group>
+        <param name="use_map_topic" value=true />
+      </group>
 
     <group if="$(arg Map)">
   <!-- Map server -->

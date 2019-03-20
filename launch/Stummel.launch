@@ -36,14 +36,14 @@
     </group>
 
     <group if="$(arg Map)">
-  <!-- Map server -->
-      <arg name="map_file" value="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
-      <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
-          <param name="frame_id" value="map" />
-      </node>
+        <!-- Map server -->
+        <arg name="map_file" value="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
+        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+          <!-- <param name="frame_id" value="map" /> -->
+        </node>
      </group>
 
-         <!-- Start the amcl Localization -->
+     <!-- Start the amcl Localization -->
      <group if="$(arg AmclLocalization)">
         <node pkg="amcl" type="amcl" name="amcl">
             <!-- Publish scans from best pose at a max of 10 Hz -->
@@ -73,12 +73,18 @@
             <param name="laser_likelihood_max_dist" value="2.0"/>
             <param name="update_min_d" value="0.2"/>
             <param name="update_min_a" value="0.5"/>
-            <param name="odom_frame_id" value="odom"/>
             <param name="resample_interval" value="1"/>
             <param name="transform_tolerance" value="0.1"/>
             <param name="recovery_alpha_slow" value="0.0"/>
             <param name="recovery_alpha_fast" value="0.0"/>
             <param name="use_map_topic" value="true"/>
+            <param name="odom_frame_id" value="odom"/>
+            <param name="base_frame_id" value="base_link"/>
+            <param name="global_frame_id" value="map"/>
+            <param name="initial_pose_x" value="0.0"/>
+            <param name="initial_pose_y" value="0.0"/>
+            <param name="initial_pose_a" value="0.0"/>
+
          </node>
       </group>
 
@@ -98,6 +104,7 @@
 		<param name="base_global_planner" type="string" value="navfn/NavfnROS" />
 		<param name="conservative_reset_dist" type="double" value="3.0" />
 		<param name="controller_frequency" type="double" value="15.0" />
-	</node> 
+		<param name="move_base/global_costmap/global_frame" value="map" />
+	</node>
 </launch>
 

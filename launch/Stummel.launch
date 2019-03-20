@@ -9,7 +9,7 @@
     <arg name="enableMotor" value="1"/>
     <arg name="Map" value="1"/>
     <arg name="AmclLocalization" value="1"/>
-    
+
     <group if="$(arg Map)">
         <!-- Map server -->
         <arg name="map_file" value="$(find cnc-stummeldriver)/maps/department_sim.yaml"/>
@@ -82,6 +82,7 @@
             <param name="odom_frame_id" value="odom"/>
             <param name="base_frame_id" value="base_link"/>
             <param name="global_frame_id" value="map"/>
+            <param name="use_map_topic" value="true"/>
             <param name="initial_pose_x" value="0.0"/>
             <param name="initial_pose_y" value="0.0"/>
             <param name="initial_pose_a" value="0.0"/>

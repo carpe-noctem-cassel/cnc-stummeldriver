@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: cnc-stummeldriver
+    relative_path: urdf/robot.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/coffee_bot.srdf
+  CONFIG:
+    author_name: Omar "Goatfryed" Sood
+    author_email: example@example.io
+    generated_timestamp: 1553685232

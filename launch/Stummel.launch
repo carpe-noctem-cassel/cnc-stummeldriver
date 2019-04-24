@@ -37,9 +37,12 @@
 
     <!-- Publish the required transform -->
     <group if="$(arg Transform)">
-        <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.125 0 0.34 0 0 0 base_link velodyne 100" />
+        <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.125 0 0.34 0 3.14 3.14 base_link velodyne 100" />
        <!-- <include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/> -->
     </group>
+
+        <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_link base_footprint 100" />
+        <!-- <include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/> -->
 
     <!-- Start the Velodyne Laser node if Velodyne Laser is used  -->
     <group if="$(arg VelodyneLaser)">
@@ -81,7 +84,7 @@
             <param name="recovery_alpha_slow" value="0.0"/>
             <param name="recovery_alpha_fast" value="0.0"/>
             <param name="odom_frame_id" value="odom"/>
-            <param name="base_frame_id" value="base_link"/>
+            <param name="base_frame_id" value="base_footprint"/>
             <param name="global_frame_id" value="map"/>
             <param name="use_map_topic" value="true"/>
             <param name="initial_pose_x" value="0.0"/>

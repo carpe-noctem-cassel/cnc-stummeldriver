@@ -6,6 +6,7 @@
     <arg name="Joy" value="0"/>
     <arg name="Transform" value="1"/>
     <arg name="Dashboard" value="0"/>
+    <arg name="UdpProxy" value="1"/>
     <arg name="enableMotor" value="1"/>
     <arg name="Map" value="1"/>
     <arg name="AmclLocalization" value="1"/>
@@ -33,6 +34,11 @@
     <!-- Start the Dashboard  -->
     <group if="$(arg Dashboard)">
         <node pkg="p2os_dashboard" name="p2os_dashboard" type="p2os_dashboard"/>
+    </group>
+
+    <!-- Start the udp proxy  -->
+    <group if="$(arg UdpProxy)">
+        <node pkg="stummel_udp_proxy" name="stummel_udp_proxy" type="stummel_udp_proxy"/>
     </group>
 
     <!-- Publish the required transform -->

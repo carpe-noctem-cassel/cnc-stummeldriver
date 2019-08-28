@@ -48,7 +48,7 @@
     </group>
 
     <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_link base_footprint 100"/>
-    <include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/>
+    <!--<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/> -->
 
     <!-- Start the Velodyne Laser node if Velodyne Laser is used  -->
     <group if="$(arg VelodyneLaser)">

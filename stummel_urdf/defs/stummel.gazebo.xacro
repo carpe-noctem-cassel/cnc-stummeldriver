@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+       name="stummel_sim">
+
+    <xacro:include filename="$(find cnc-stummeldriver)/stummel_urdf/defs/stummel_body.xacro"/>
+
+ <!-- Makes Gazebo publishing a ground truth position. -->
+  <xacro:macro name="stummel_ground_truth_pose">
+    <gazebo>
+      <plugin name="p3d_controller" filename="libgazebo_ros_p3d.so">
+       <alwaysOn>true</alwaysOn>
+       <updateRate>100.0</updateRate>
+       <bodyName>base_link</bodyName>
+       <topicName>ground_truth_pose</topicName>
+       <frameName>/map</frameName>
+       <xyzOffsets>1 1 0</xyzOffsets> <!-- option to initialize odometry for fake localization-->
+       <rpyOffsets>0 0 0</rpyOffsets>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+    <xacro:macro name="velodyne">
+        <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+        <VLP-16 parent="top_plate" name="velodyne" topic="/velodyne_points" hz="40" samples="440" gpu="${gpu}">
+            <origin xyz="0.125 0 0.34" rpy="0 0 3.14"/>
+        </VLP-16>
+    </xacro:macro>
+
+
+    <xacro:p3at_front suffix="left" reflect="1"/>
+    <xacro:p3at_front suffix="right" reflect="-1"/>
+    <xacro:p3at_back suffix="left" reflect="1"/>
+    <xacro:p3at_back suffix="right" reflect="-1"/>
+    <xacro:p3at_gazebo_ext/>
+    <xacro:velodyne/>
+    <xacro:stummel_ground_truth_pose/>
+
+</robot>

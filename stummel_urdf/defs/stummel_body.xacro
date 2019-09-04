@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<robot
+        xmlns:xacro="http://ros.org/wiki/xacro"
+>
+
+    <xacro:arg name="gpu" default="false"/>
+<xacro:property name="gpu" value="$(arg gpu)"/>
+
+    <xacro:include filename="$(find p2os_urdf)/defs/pioneer3at_body.xacro" />
+
+
+</robot>

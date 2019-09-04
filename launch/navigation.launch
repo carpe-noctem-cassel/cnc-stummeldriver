@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+		<remap from="cloud_in" to="velodyne_points"/> <!-- not sure if this works correctly -->
+</node>
+<!-- From p2os/launch/navigation.launch-->
+	<!--<master auto="start"/>-->
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/base_local_planner_params.yaml" command="load" />
+		<param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+		<param name="conservative_reset_dist" type="double" value="3.0" />
+		<param name="controller_frequency" type="double" value="15.0" />
+	</node> 
+
+
+</launch>

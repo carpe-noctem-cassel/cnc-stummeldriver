@@ -1,11 +1,25 @@
+<?xml version="1.0"?>
 <launch>
     <!-- Defining the arguments -->
     <arg name="VelodyneLaser" value="1"/>
     <arg name="P2OS_Driver" value="1"/>
-    <arg name="Joy" value="1"/>
+    <arg name="Joy" value="0"/>
     <arg name="Transform" value="1"/>
     <arg name="Dashboard" value="0"/>
+    <arg name="UdpProxy" value="1"/>
     <arg name="enableMotor" value="1"/>
+    <arg name="Map" value="1"/>
+    <arg name="AmclLocalization" value="1"/>
+
+    <group if="$(arg Map)">
+        <!-- Map server -->
+        <arg name="map_file" value="$(find cnc-stummeldriver)/maps/map_final.yaml"/>
+        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+            <param name="frame_id" value="map"/>
+        </node>
+    </group>
+
+    <include file="$(find cnc-stummeldriver)/stummel_urdf/launch/stummel.real.launch"/>
 
     <!-- Start the p2os ROS Driver  -->
     <group if="$(arg P2OS_Driver)">
@@ -22,16 +36,89 @@
         <node pkg="p2os_dashboard" name="p2os_dashboard" type="p2os_dashboard"/>
     </group>
 
+    <!-- Start the udp proxy  -->
+    <group if="$(arg UdpProxy)">
+        <node pkg="stummel_udp_proxy" name="stummel_udp_proxy" type="stummel_udp_proxy"/>
+    </group>
+
     <!-- Publish the required transform -->
     <group if="$(arg Transform)">
-        <include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/>
+        <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.125 0 0.34 0 3.14 3.14 base_link velodyne 100"/>
+        <!-- <include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/> -->
     </group>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_link base_footprint 100"/>
+    <!--<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch"/> -->
 
     <!-- Start the Velodyne Laser node if Velodyne Laser is used  -->
     <group if="$(arg VelodyneLaser)">
         <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
     </group>
 
-    <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+    <!-- Start the amcl Localization -->
+    <group if="$(arg AmclLocalization)">
+        <node pkg="amcl" type="amcl" name="amcl">
+            <!-- Publish scans from best pose at a max of 10 Hz -->
+            <param name="odom_model_type" value="diff"/>
+            <param name="odom_alpha5" value="0.1"/>
+            <param name="transform_tolerance" value="0.2"/>
+            <param name="gui_publish_rate" value="10.0"/>
+            <param name="laser_max_beams" value="30"/>
+            <param name="min_particles" value="500"/>
+            <param name="max_particles" value="5000"/>
+            <param name="kld_err" value="0.05"/>
+            <param name="kld_z" value="0.99"/>
+            <param name="odom_alpha1" value="0.2"/>
+            <param name="odom_alpha2" value="0.2"/>
+            <!-- translation std dev, m -->
+            <param name="odom_alpha3" value="0.8"/>
+            <param name="odom_alpha4" value="0.2"/>
+            <param name="laser_z_hit" value="0.5"/>
+            <param name="laser_z_short" value="0.05"/>
+            <param name="laser_z_max" value="0.05"/>
+            <param name="laser_z_rand" value="0.5"/>
+            <param name="laser_sigma_hit" value="0.2"/>
+            <param name="laser_lambda_short" value="0.1"/>
+            <param name="laser_lambda_short" value="0.1"/>
+            <!-- <param name="laser_model_type" value="likelihood_field"/> -->
+            <param name="laser_model_type" value="beam"/>
+            <param name="laser_likelihood_max_dist" value="2.0"/>
+            <param name="update_min_d" value="0.2"/>
+            <param name="update_min_a" value="0.5"/>
+            <param name="resample_interval" value="1"/>
+            <param name="transform_tolerance" value="0.2"/>
+            <param name="recovery_alpha_slow" value="0.0"/>
+            <param name="recovery_alpha_fast" value="0.0"/>
+            <param name="odom_frame_id" value="odom"/>
+            <param name="base_frame_id" value="base_footprint"/>
+            <param name="global_frame_id" value="map"/>
+            <param name="use_map_topic" value="true"/>
+            <param name="initial_pose_x" value="0.0"/>
+            <param name="initial_pose_y" value="0.0"/>
+            <param name="initial_pose_a" value="0.0"/>
+
+        </node>
+    </group>
+
+    <!--<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+        <remap from="cloud_in" to="velodyne_points"/>
+    </node>-->
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/costmap_common_params_stummel.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/global_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find cnc-stummeldriver)/launch/p2os_launch/base_local_planner_params.yaml" command="load"/>
+        <param name="base_global_planner" type="string" value="navfn/NavfnROS"/>
+        <param name="conservative_reset_dist" type="double" value="3.0"/>
+        <param name="controller_frequency" type="double" value="15.0"/>
+        <param name="move_base/global_costmap/global_frame" value="map"/>
+        <param name="odom_frame_id" value="odom"/>
+        <param name="base_frame_id" value="base_link"/>
+        <param name="global_frame_id" value="map"/>
+        <param name="odom_topic" value="pose"/>
+        <param name="laser_topic" value="scan"/>
+    </node>
 </launch>
 

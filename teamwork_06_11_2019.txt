@@ -1,0 +1,76 @@
+Wir haben uns alle vier zusammen getroffen und angefangen auf einem frischen Ubuntu 18.04 die ROS Umgebung aufzusetzen.
+Vadim übte sich an dem Laptop mit der installation und der für ihn neuen Linux Umgebung. Alle anderen halfen ihn bei Fehlermeldungen, welche
+bei der Installation aufgetraten. Es wurde ein Bash script genutzt welches das Aufsetzen vereinfachen sollte.
+Es wurde grob diskutiert wie weiter verfahren werden sollte, da wir bei der Einnrichtung bei der GUI von moveIt nicht weiterkamen.
+Vadim bot sich an die Woche noch mal drüber zu schauen. Max schrieb den Bericht für den Tag.
+
+#!/bin/bash
+
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+sudo apt update
+sudo apt install ros-melodic-desktop-full
+
+sudo sh -c 'echo "deb http://download.opensuse.org/repositories/network:/messaging:/zeromq:/git-draft/xUbuntu_18.04/ ./" >> /etc/apt/sources.list'
+sudo wget https://download.opensuse.org/repositories/network:/messaging:/zeromq:/git-draft/xUbuntu_18.04/Release.key -O- | sudo apt-key add
+sudo apt update
+sudo apt install libzmq3-dev
+
+sudo apt install net-tools openjdk-11-jdk myrepos autoconf automake libtool cmake bison re2c build-essential g++ gitk uuid-dev capnproto libcapnp-dev python-catkin-tools qtscript5-dev
+
+git clone https://github.com/potassco/clingo.git
+cd clingo/
+mkdir build
+git submodule update --init --recursive
+cd build
+cmake ..
+make
+sudo make install
+
+cd ../..
+
+mkdir src
+catkin init
+
+cd src
+
+git clone https://github.com/dasys-lab/alica.git
+git clone https://github.com/dasys-lab/alica-plan-designer-fx.git
+git clone https://github.com/dasys-lab/alica-supplementary.git
+git clone https://github.com/dasys-lab/aspsuite.git
+git clone https://github.com/dasys-lab/capnzero.git
+git clone https://github.com/dasys-lab/essentials.git
+
+cd alica
+git checkout newPD
+cd ..
+
+cd alica-supplementary
+git checkout CapnZero
+cd ..
+
+cd aspsuite
+git checkout asp_dev
+cd ..
+
+cd capnzero
+git checkout master
+cd ..
+
+cd essentials
+git checkout CapnZero
+cd ..
+
+cd alica-plan-designer-fx
+git checkout master
+cd ..
+
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+echo "source ~/PKVR/workspace/devel/setup.bash" >> ~/.bashrc
+echo "#fancy prompt that also shows the current branch " >> ~/.bashrc
+echo "export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \[\033[01;31m\]$(__git_ps1 "[%s]")\[\033[01;34m\]\$\[\033[00m\] '" >>  ~/.bashrc
+source ~/.bashrc
+
+cd ..
+
+#catkin build

@@ -1,4 +1,5 @@
 #!/bin/bash
 
 roscore &
-rosrun rviz rviz
+#Launch after ros server started:
+#rosrun rviz rviz

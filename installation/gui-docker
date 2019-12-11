@@ -52,7 +52,7 @@ ${DOCKER_COMMAND} run \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v "/tmp/.docker.xauth:/tmp/.docker.xauth" \
-  -v "/$(pwd)/kinova-ros:/kinova-ros"\
+  -v "/$(pwd)/kinova-ros:/opt/ros/melodic/src/kinova-ros"\
   -v "/$(pwd)/rosMe.sh:/rosMe.sh"\
   ${DOCKER_GPU_PARAMS} \
   $@

@@ -53,6 +53,8 @@ ${DOCKER_COMMAND} run \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v "/tmp/.docker.xauth:/tmp/.docker.xauth" \
   -v "/$(pwd)/kinova-ros:/opt/ros/melodic/src/kinova-ros"\
+  -v "/$(pwd)/moveit_tutorials:/opt/ros/melodic/src/moveit_tutorials"\
+  -v "/$(pwd)/panda_moveit_config:/opt/ros/melodic/src/panda_moveit_config/"\
   -v "/$(pwd)/scripts:/launchScripts"\
   ${DOCKER_GPU_PARAMS} \
   $@

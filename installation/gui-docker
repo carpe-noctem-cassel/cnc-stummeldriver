@@ -55,7 +55,7 @@ ${DOCKER_COMMAND} run \
   -v "/$(pwd)/kinova-ros:/opt/ros/melodic/src/kinova-ros"\
   -v "/$(pwd)/moveit_tutorials:/opt/ros/melodic/src/moveit_tutorials"\
   -v "/$(pwd)/panda_moveit_config:/opt/ros/melodic/src/panda_moveit_config/"\
-  -v "/$(pwd)/StummelHoltKaffee:/opt/ros/melodic/src/StummelHoltKaffee/"\
+  -v "/$(pwd)/stummel_holt_kaffee:/opt/ros/melodic/src/stummel_holt_kaffee/"\
   -v "/$(pwd)/scripts:/launchScripts"\
   ${DOCKER_GPU_PARAMS} \
   $@
